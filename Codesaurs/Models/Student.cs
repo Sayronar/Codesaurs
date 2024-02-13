@@ -1,8 +1,9 @@
+using DefaultNamespace;
+
 namespace WebApplication4.Models;
 
 public class Student
 {
-    
     public Guid Id { get; set; }
     public string FirstName { get; set; }
     public string LastName { get; set; }
@@ -14,6 +15,7 @@ public class Student
     public string ProfileImageUrl { get; set; } = string.Empty;
     public string ParentFullName { get; set; }
     public string ParentContact { get; set; }
+    public ICollection<StudentCourse> StudentCourses { get; set; }
     public Student(Guid id, string firstName, string lastName, DateTime birthDate, string gender, string email, string phoneNumber, string profileImageUrl,
         string parentFullName,
         string parentContact)

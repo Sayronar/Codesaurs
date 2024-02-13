@@ -1,3 +1,5 @@
+using DefaultNamespace;
+
 namespace Codesaurs.Models;
 
 public class Course
@@ -13,4 +15,5 @@ public class Course
     public string? Language { get; set; }
     public List<string>? Chips { get; set; } = new List<string>();
     public int? Views { get; set; }
+    public ICollection<StudentCourse> StudentCourses { get; set; }
 }
