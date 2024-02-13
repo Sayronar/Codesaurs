@@ -1,0 +1,29 @@
+﻿@model List<Student>
+
+<h1>All students</h1>
+
+<table>
+    <thead>
+    <tr>
+        <th>Id</th>
+        <th>First name</th>
+        <th>Last name</th>
+        <th>Gender</th>
+        <th>Age</th>
+        <th>Email</th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var student in Model)
+    {
+        <tr>
+            <td>@student.Id</td>
+            <td>@student.FirstName</td>
+            <td>@student.LastName</td>
+            <td>@student.Gender</td>
+            <td>@student.Age</td>
+            <td>@student.Email</td>
+        </tr>
+    }
+    </tbody>
+</table>
