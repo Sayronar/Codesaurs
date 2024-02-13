@@ -3,15 +3,15 @@ using Codesaurs.Models;
 using Codesaurs.Models;
 using Codesaurs.Repositories;
 using Codesaurs.Repositories.Abstraction;
-using CourseBackend.Models;
+using WebApplication4.DB;
 
 namespace Codesaurs.Repository.Concrete;
 
 public class CourseRepository : ICourseRepository
 {
-    private readonly AppDbContext _context;
+    private readonly CodesaurusDbContext _context;
 
-    public CourseRepository(AppDbContext context)
+    public CourseRepository(CodesaurusDbContext context)
     {
         _context = context;
     }

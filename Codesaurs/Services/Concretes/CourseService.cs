@@ -1,6 +1,5 @@
 using Codesaurs.Models;
 using Codesaurs.Repositories.Abstraction;
-using Codesaurs.Repository.Concrete;
 using Codesaurs.Service.Abstractions;
 
 namespace Codesaurs.Service.Concretes
