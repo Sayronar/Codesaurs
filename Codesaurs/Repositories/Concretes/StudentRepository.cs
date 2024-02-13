@@ -14,52 +14,38 @@ public class StudentRepository : IStudentRepository
         _context = context;
     }
 
-    public async Task<List<StudentEntity>> Get()
+    public async Task<List<Student>> Get()
     {
         return await _context.Students
             .AsNoTracking()
-            //.OrderBy(student => student.Id)
             .ToListAsync();
     }
 
-    public async Task<StudentEntity?> GetById(Guid id)
+    public async Task<Student?> GetById(Guid id)
     {
         return await _context.Students
             .AsNoTracking()
             .FirstOrDefaultAsync(student => student.Id == id);
     }
 
-    public async Task<List<StudentEntity>> GetByName(string name)
+    public async Task<List<Student>> GetByName(string name)
     {
         return await _context.Students
             .AsNoTracking()
             .Where(student => (student.FirstName + student.LastName).Contains(name)).ToListAsync();
     }
 
-    public async Task<StudentEntity?> GetByEmail(string email)
+    public async Task<Student?> GetByEmail(string email)
     {
         return await _context.Students
             .AsNoTracking()
             .FirstOrDefaultAsync(student => student.Email == email);
     }
 
-    public async Task Add(Guid id, string firstName, string lastName, DateTime birthDate, uint age, string gender, string phoneNumber, string email, string profileImageUrl,
+    public async Task Add(Guid id, string firstName, string lastName, DateTime birthDate, string gender, string phoneNumber, string email, string profileImageUrl,
         string parentFullName, string parentContact)
     {
-        var studentEntity = new StudentEntity
-        {
-            Id = id,
-            FirstName = firstName,
-            LastName = lastName,
-            BirthDate = birthDate,
-            Age = age,
-            Gender = gender,
-            PhoneNumber = phoneNumber,
-            Email = email,
-            ProfileImageUrl = profileImageUrl,
-            ParentFullName = parentFullName,
-            ParentContact = parentContact
-        };
+        var studentEntity = new Student(id, firstName, lastName, birthDate, gender, email, phoneNumber, profileImageUrl, parentFullName, parentContact);
         await _context.Students.AddAsync(studentEntity);
         await _context.SaveChangesAsync();
     }
