@@ -1,7 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using WebApplication4.Contracts;
 using WebApplication4.Models;
-using WebApplication4.Services;
 using WebApplication4.Services.Abstractions;
 
 namespace WebApplication4.Controllers;
@@ -16,138 +15,55 @@ public class StudentController : Controller
         _studentService = studentService;
     }
 
-    [HttpGet]
-    public IActionResult GetAll()
+    [Route("/")]
+    public IActionResult Home()
     {
-        var students = _studentService.GetAll();
-        return View(students);
+        return View();
     }
 
-    [HttpGet]
-    public IActionResult GetById(Guid id)
+    [HttpGet("/students")]
+    public async Task<IActionResult> GetAll()
     {
-        var student = _studentService.GetById(id);
-        return student == null ? NotFound() : View(student);
+        var students = await _studentService.GetAll();
+        return View("GetAll", students);
     }
 
-    [HttpPost]
-    public void Add([FromBody] StudentsRequest request)
+    [HttpGet("/students/{id:guid}")]
+    public async Task<IActionResult> GetById(Guid id)
     {
+        var student = await _studentService.GetById(id);
+        if (student == null)
+        {
+            return NotFound();
+        }
+        return View("GetById",student);
+    }
+
+    [HttpPost("/students/add")]
+    public IActionResult Add([FromBody] StudentsRequest request)
+    {
+        if (!ModelState.IsValid)
+        {
+            return BadRequest(ModelState);
+        }
         var student = new Student(Guid.NewGuid(), request.FirstName, request.LastName, request.BirthDate, request.Gender, request.Email, request.PhoneNumber,
             request.ProfileImageUrl, request.ParentFullName, request.ParentContact);
         _studentService.Add(student);
-    }
 
-    [HttpDelete]
-    public void Delete(Guid id)
-    {
-        _studentService.Delete(id);
+        return CreatedAtAction(nameof(GetById), new { id = student.Id }, student);
     }
     
-    [HttpPut]
+    [HttpPut("/students/update")]
     public void Update([FromBody] StudentsResponse response)
     {
-        _studentService.Update(response.Id, response.FirstName, response.LastName, response.BirthDate, response.Age, response.Gender, response.PhoneNumber, response.Email,
+        _studentService.Update(response.Id, response.FirstName, response.LastName, response.BirthDate, response.Gender, response.PhoneNumber, response.Email,
             response.ProfileImageUrl, response.ParentFullName, response.ParentContact);
     }
     
-    [HttpPut]
-    public async void UpdateFirstName(Guid id, string firstName)
+    [HttpDelete("/students/delete")]
+    public void Delete(Guid id)
     {
-        var student = await _studentService.GetById(id);
-        if (student != null)
-        {
-            await _studentService.Update(id, firstName, student.LastName, student.BirthDate, student.Age, student.Gender, student.PhoneNumber, student.Email,
-                student.ProfileImageUrl, student.ParentFullName, student.ParentContact);
-        }
-    }
-
-    [HttpPut]
-    public async void UpdateLastName(Guid id, string lastName)
-    {
-        var student = await _studentService.GetById(id);
-        if (student != null)
-        {
-            await _studentService.Update(id, student.FirstName, lastName, student.BirthDate, student.Age, student.Gender, student.PhoneNumber, student.Email,
-                student.ProfileImageUrl, student.ParentFullName, student.ParentContact);
-        }
-    }
-
-    [HttpPut]
-    public async void UpdateBirthDate(Guid id, DateTime birthDate)
-    {
-        var student = await _studentService.GetById(id);
-        if (student != null)
-        {
-            await _studentService.Update(id, student.FirstName, student.LastName, birthDate, student.Age, student.Gender, student.PhoneNumber, student.Email,
-                student.ProfileImageUrl, student.ParentFullName, student.ParentContact);
-        }
-    }
-
-    [HttpPut]
-    public async void UpdateGender(Guid id, string gender)
-    {
-        var student = await _studentService.GetById(id);
-        if (student != null)
-        {
-            await _studentService.Update(id, student.FirstName, student.LastName, student.BirthDate, student.Age, gender, student.PhoneNumber, student.Email,
-                student.ProfileImageUrl, student.ParentFullName, student.ParentContact);
-        }
-    }
-
-    [HttpPut]
-    public async void UpdatePhoneNumber(Guid id, string phoneNumber)
-    {
-        var student = await _studentService.GetById(id);
-        if (student != null)
-        {
-            await _studentService.Update(id, student.FirstName, student.LastName, student.BirthDate, student.Age, student.Gender, phoneNumber, student.Email,
-                student.ProfileImageUrl, student.ParentFullName, student.ParentContact);
-        }
-    }
-    
-    [HttpPut]
-    public async void UpdateEmail(Guid id, string email)
-    {
-        var student = await _studentService.GetById(id);
-        if (student != null)
-        {
-            await _studentService.Update(id, student.FirstName, student.LastName, student.BirthDate, student.Age, student.Gender, student.PhoneNumber, email,
-                student.ProfileImageUrl, student.ParentFullName, student.ParentContact);
-        }
-    }
-    
-    [HttpPut]
-    public async void UpdateProfileImage(Guid id, string profileImageUrl)
-    {
-        var student = await _studentService.GetById(id);
-        if (student != null)
-        {
-            await _studentService.Update(id, student.FirstName, student.LastName, student.BirthDate, student.Age, student.Gender, student.PhoneNumber, student.Email,
-                profileImageUrl, student.ParentFullName, student.ParentContact);
-        }
-    }
-    
-    [HttpPut]
-    public async void UpdateParentFullName(Guid id, string parentFullName)
-    {
-        var student = await _studentService.GetById(id);
-        if (student != null)
-        {
-            await _studentService.Update(id, student.FirstName, student.LastName, student.BirthDate, student.Age, student.Gender, student.PhoneNumber, student.Email,
-                student.ProfileImageUrl, parentFullName, student.ParentContact);
-        }
-    }
-    
-    [HttpPut]
-    public async void UpdateParentContact(Guid id, string parentContact)
-    {
-        var student = await _studentService.GetById(id);
-        if (student != null)
-        {
-            await _studentService.Update(id, student.FirstName, student.LastName, student.BirthDate, student.Age, student.Gender, student.PhoneNumber, student.Email,
-                student.ProfileImageUrl, student.ParentFullName, parentContact);
-        }
+        _studentService.Delete(id);
     }
 
 }

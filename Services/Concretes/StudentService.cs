@@ -1,5 +1,4 @@
 using WebApplication4.Models;
-using WebApplication4.Repositories;
 using WebApplication4.Repositories.Abstractions;
 using WebApplication4.Services.Abstractions;
 
@@ -45,11 +44,11 @@ public class StudentService : IStudentService
             student.ProfileImageUrl, student.ParentFullName, student.ParentContact);
     }
 
-    public async Task Update(Guid id, string firstName, string lastName, DateTime birthDate, uint age, string gender, string phoneNumber, string email,
+    public async Task Update(Guid id, string firstName, string lastName, DateTime birthDate, string gender, string phoneNumber, string email,
         string profileImageUrl,
         string parentFullName, string parentContact)
     {
-        await _studentRepository.Update(id, firstName, lastName, birthDate, age, gender, phoneNumber, email, profileImageUrl, parentFullName, parentContact);
+        await _studentRepository.Update(id, firstName, lastName, birthDate, gender, phoneNumber, email, profileImageUrl, parentFullName, parentContact);
     }
 
     public async Task Delete(Guid id)

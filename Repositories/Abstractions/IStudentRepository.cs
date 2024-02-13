@@ -10,7 +10,7 @@ public interface IStudentRepository
     public Task<StudentEntity?> GetByEmail(string email);
     public Task Add(Guid id, string firstName, string lastName, DateTime birthDate, uint age, string gender, string phoneNumber, string email, string profileImageUrl,
         string parentFullName, string parentContact);
-    public Task Update(Guid id, string firstName, string lastName, DateTime birthDate, uint age, string gender, string phoneNumber, string email,
+    public Task Update(Guid id, string firstName, string lastName, DateTime birthDate, string gender, string phoneNumber, string email,
         string profileImageUrl,
         string parentFullName, string parentContact);
     public Task Delete(Guid id);

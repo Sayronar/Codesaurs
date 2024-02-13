@@ -71,24 +71,73 @@ public class StudentRepository : IStudentRepository
             .ExecuteDeleteAsync();
     }
     
-    public async Task Update(Guid id, string firstName, string lastName, DateTime birthDate, uint age, string gender, string phoneNumber, string email,
+    public async Task Update(Guid id, string firstName, string lastName, DateTime birthDate, string gender, string phoneNumber, string email,
         string profileImageUrl,
         string parentFullName, string parentContact)
     {
-        await _context.Students
-            .Where(student => student.Id == id)
-            .ExecuteUpdateAsync(calls => calls
-                .SetProperty(student => student.FirstName, student => firstName)
-                .SetProperty(student => student.LastName, student => lastName)
-                .SetProperty(student => student.BirthDate, student => birthDate)
-                .SetProperty(student => student.Age, student => age)
-                .SetProperty(student => student.Gender, student => gender)
-                .SetProperty(student => student.Email, student => email)
-                .SetProperty(student => student.PhoneNumber, student => phoneNumber)
-                .SetProperty(student => student.ProfileImageUrl, student => profileImageUrl)
-                .SetProperty(student => student.ParentFullName, student => parentFullName)
-                .SetProperty(student => student.ParentContact, parentContact)
-            );
+        if (!string.IsNullOrWhiteSpace(firstName))
+        {
+            await _context.Students
+                .Where(student => student.Id == id)
+                .ExecuteUpdateAsync(calls => calls
+                    .SetProperty(student => student.FirstName, student => firstName));
+        }
+        if (!string.IsNullOrWhiteSpace(lastName))
+        {
+            await _context.Students
+                .Where(student => student.Id == id)
+                .ExecuteUpdateAsync(calls => calls
+                    .SetProperty(student => student.LastName, student => lastName));
+        }
+        if (birthDate != null)
+        {
+            await _context.Students
+                .Where(student => student.Id == id)
+                .ExecuteUpdateAsync(calls => calls
+                    .SetProperty(student => student.BirthDate, student => birthDate));
+        }
+        if (!string.IsNullOrWhiteSpace(gender))
+        {
+            await _context.Students
+                .Where(student => student.Id == id)
+                .ExecuteUpdateAsync(calls => calls
+                    .SetProperty(student => student.Gender, student => gender));
+        }
+        if (!string.IsNullOrWhiteSpace(email))
+        {
+            await _context.Students
+                .Where(student => student.Id == id)
+                .ExecuteUpdateAsync(calls => calls
+                    .SetProperty(student => student.Email, student => email));
+        }
+        if (!string.IsNullOrWhiteSpace(phoneNumber))
+        {
+            await _context.Students
+                .Where(student => student.Id == id)
+                .ExecuteUpdateAsync(calls => calls
+                    .SetProperty(student => student.PhoneNumber, student => phoneNumber));
+        }
+        if (!string.IsNullOrWhiteSpace(profileImageUrl))
+        {
+            await _context.Students
+                .Where(student => student.Id == id)
+                .ExecuteUpdateAsync(calls => calls
+                    .SetProperty(student => student.ProfileImageUrl, student => profileImageUrl));
+        }
+        if (!string.IsNullOrWhiteSpace(parentFullName))
+        {
+            await _context.Students
+                .Where(student => student.Id == id)
+                .ExecuteUpdateAsync(calls => calls
+                    .SetProperty(student => student.ParentFullName, student => parentFullName));
+        }
+        if (!string.IsNullOrWhiteSpace(parentContact))
+        {
+            await _context.Students
+                .Where(student => student.Id == id)
+                .ExecuteUpdateAsync(calls => calls
+                    .SetProperty(student => student.ParentContact, parentContact));
+        }
     }
     
     
