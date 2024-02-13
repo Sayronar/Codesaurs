@@ -6,7 +6,7 @@ namespace WebApplication4.DB;
 
 public class CodesaurusDbContext : DbContext
 {
-    public DbSet<StudentEntity> Students { get; set; }
+    public DbSet<Student> Students { get; set; }
     public CodesaurusDbContext(DbContextOptions<CodesaurusDbContext> options) : base(options)
     {
     }

@@ -1,5 +1,4 @@
 using Microsoft.AspNetCore.Mvc;
-using WebApplication4.Contracts;
 using WebApplication4.Models;
 using WebApplication4.Services.Abstractions;
 
@@ -15,20 +14,18 @@ public class StudentController : Controller
         _studentService = studentService;
     }
 
-    [Route("/")]
     public IActionResult Home()
     {
         return View();
     }
 
-    [HttpGet("/students")]
     public async Task<IActionResult> GetAll()
     {
         var students = await _studentService.GetAll();
         return View("GetAll", students);
     }
 
-    [HttpGet("/students/{id:guid}")]
+    [HttpGet]
     public async Task<IActionResult> GetById(Guid id)
     {
         var student = await _studentService.GetById(id);
@@ -39,28 +36,29 @@ public class StudentController : Controller
         return View("GetById",student);
     }
 
-    [HttpPost("/students/add")]
-    public IActionResult Add([FromBody] StudentsRequest request)
+    [HttpPost]
+    public IActionResult Add(string firstName, string lastName, DateTime birthDate, string gender, string email, string phoneNumber, string profileImageUrl,
+        string parentFullName,
+        string parentContact)
     {
         if (!ModelState.IsValid)
         {
             return BadRequest(ModelState);
         }
-        var student = new Student(Guid.NewGuid(), request.FirstName, request.LastName, request.BirthDate, request.Gender, request.Email, request.PhoneNumber,
-            request.ProfileImageUrl, request.ParentFullName, request.ParentContact);
+        var student = new Student(Guid.NewGuid(), firstName, lastName, birthDate, gender, email, phoneNumber, profileImageUrl, parentFullName, parentContact);
         _studentService.Add(student);
 
         return CreatedAtAction(nameof(GetById), new { id = student.Id }, student);
     }
     
-    [HttpPut("/students/update")]
-    public void Update([FromBody] StudentsResponse response)
+    [HttpPut]
+    public void Update([FromBody] Student student)
     {
-        _studentService.Update(response.Id, response.FirstName, response.LastName, response.BirthDate, response.Gender, response.PhoneNumber, response.Email,
-            response.ProfileImageUrl, response.ParentFullName, response.ParentContact);
+        _studentService.Update(student.Id, student.FirstName, student.LastName, student.BirthDate, student.Gender, student.PhoneNumber, student.Email,
+            student.ProfileImageUrl, student.ParentFullName, student.ParentContact);
     }
     
-    [HttpDelete("/students/delete")]
+    [HttpDelete]
     public void Delete(Guid id)
     {
         _studentService.Delete(id);

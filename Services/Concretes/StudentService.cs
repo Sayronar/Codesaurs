@@ -40,7 +40,7 @@ public class StudentService : IStudentService
 
     public async Task Add(Student student)
     {
-        await _studentRepository.Add(student.Id, student.FirstName, student.LastName, student.BirthDate, student.Age, student.Gender, student.PhoneNumber, student.Email,
+        await _studentRepository.Add(student.Id, student.FirstName, student.LastName, student.BirthDate, student.Gender, student.PhoneNumber, student.Email,
             student.ProfileImageUrl, student.ParentFullName, student.ParentContact);
     }
 
